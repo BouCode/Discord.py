@@ -14,8 +14,10 @@ arr = []
 punt_question = 10
 punt_answer = 15
 Sei, Empire = 0, 0
-bot = commands.Bot (command_prefix = '!')
 educ_1, educ_2, educ_3 = "Primaria", "Secundaria", "Preuniversitario"
+
+client = discord.Client()
+bot = commands.Bot (command_prefix = '!')
 
 @bot.event 
 async def on_ready ():
@@ -47,17 +49,23 @@ async def point (ctx):
 
     await ctx.send ('Tienes {} puntos'.format (num))            
 
-
 @bot.command()
-async def acceso (ctx): 
+async def acceso (ctx):
     await ctx.send ('Para acceder digite su nivel educativo:\n1. {}\n2. {}\n3. {}'.format(educ_1, educ_2, educ_3))
     msg = await bot.wait_for ('message')
-    if int(msg.content) == 1: 
+    
+    if msg.content == '1': 
         await ctx.send ('{} registrado como estudiante de {}'.format (ctx.author,educ_1 ))
-    elif msg.content == 2:
-        pass 
-    elif msg.content == 3:
-        pass
+        role = discord.utils.get (ctx.guild.roles, name=educ_1)
+        await ctx.author.add_roles (role)
+    elif msg.content == '2':
+        await ctx.send ('{} registrado como estudiante de {}'.format (ctx.author,educ_2 ))
+        role = discord.utils.get (ctx.guild.roles, name=educ_2)
+        await ctx.author.add_roles (role)
+    elif msg.content == '3':
+        await ctx.send ('{} registrado como estudiante de {}'.format (ctx.author,educ_3 ))
+        role = discord.utils.get (ctx.guild.roles, name=educ_3)
+        await ctx.author.add_roles (role)
     else:
         await ctx.send ('No te entiendo, podrias intentarlo nuevamente')
     
